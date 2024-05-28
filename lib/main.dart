@@ -22,8 +22,6 @@ class MyAppState extends State<MyApp>{
   double _peso = 50;
   double _idade = 18;
   bool changeTheme = true;
-  final _messangerKey = GlobalKey<ScaffoldMessengerState>();
-  
   
   void _selectingButtonMasc(){
     setState(() {
@@ -132,9 +130,8 @@ class MyAppState extends State<MyApp>{
                   color: changeTheme ? Colors.grey.shade500 : Colors.grey.shade300,
                   borderRadius: BorderRadius.circular(12.0),
                 ),
-                child: Expanded(
-                  child: Column(
-                    children: <Widget>[
+                child: Column(
+                  children: <Widget>[
                       const Center(
                         child: Text('Altura', style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w500)),
                       ),
@@ -161,7 +158,6 @@ class MyAppState extends State<MyApp>{
                         }
                       ),
                     ],
-                  ),
                 ),
               ),
             ),
@@ -251,49 +247,49 @@ class MyAppState extends State<MyApp>{
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
-                children: [
-                  Expanded(
-                    child: ElevatedButton(
-                      onPressed: (){
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(estadoIMC),
+                children: <Widget>[
+                  Builder(
+                    builder: (context) {
+                      return ElevatedButton(
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all<Color>(femSelectedButton ? (changeTheme ? Colors.grey.shade600 : Colors.grey.shade300) : (changeTheme ? Colors.grey.shade500 : Colors.grey.shade200)),
+                          shape: MaterialStateProperty.all<OutlinedBorder>(
+                            RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12.0),
+                            ),
                           ),
-                        );
-                      },
-                      child: const Text('Enviar'),
-                    ),
-                  )
+                        ),
+                        onPressed: () {
+                          if(_peso/pow((_altura/100), 2) < 16){
+                            estadoIMC = 'Magreza Grave';
+                          } else if(_peso/pow((_altura/100), 2) >= 16 && _peso/pow((_altura/100), 2) <= 16.9){
+                            estadoIMC = 'Magreza Moderada';
+                          } else if(_peso/pow((_altura/100), 2) >= 17 && _peso/pow((_altura/100), 2) <= 18.5){
+                            estadoIMC = 'Magreza Leve';
+                          } else if(_peso/pow((_altura/100), 2) >= 18.6 && _peso/pow((_altura/100), 2) <= 24.9){
+                            estadoIMC = 'Peso Ideal';
+                          } else if(_peso/pow((_altura/100), 2) >= 25 && _peso/pow((_altura/100), 2) <= 29.9){
+                            estadoIMC = 'Sobrepeso';
+                          } else if(_peso/pow((_altura/100), 2) >= 30 && _peso/pow((_altura/100), 2) <= 34.9){
+                            estadoIMC = 'Obesidade Grau I';
+                          } else if(_peso/pow((_altura/100), 2) >= 35 && _peso/pow((_altura/100), 2) <= 39.9){
+                            estadoIMC = 'Obesidade Grau II';
+                          } else{
+                            estadoIMC = 'Obesidade Grau III';
+                          }
+
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text(estadoIMC)),
+                          );
+                        },
+                        child: const Text('Enviar')
+                      );
+                    }
+                  ),
                 ],
               ),
-            )
+            ),
           ],
-        ),
-
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            if(_peso/pow(_altura, 2) < 16){
-              estadoIMC = 'Magreza Grave';
-            } else if(_peso/pow(_altura, 2) >= 16 && _peso/pow(_altura, 2) <= 16.9){
-              estadoIMC = 'Magreza Moderada';
-            } else if(_peso/pow(_altura, 2) >= 17 && _peso/pow(_altura, 2) <= 18.5){
-              estadoIMC = 'Magreza Leve';
-            } else if(_peso/pow(_altura, 2) >= 18.6 && _peso/pow(_altura, 2) <= 24.9){
-              estadoIMC = 'Peso Ideal';
-            } else if(_peso/pow(_altura, 2) >= 25 && _peso/pow(_altura, 2) <= 29.9){
-              estadoIMC = 'Sobrepeso';
-            } else if(_peso/pow(_altura, 2) >= 30 && _peso/pow(_altura, 2) <= 34.9){
-              estadoIMC = 'Obesidade Grau I';
-            } else if(_peso/pow(_altura, 2) >= 35 && _peso/pow(_altura, 2) <= 39.9){
-              estadoIMC = 'Obesidade Grau II';
-            } else{
-              estadoIMC = 'Obesidade Grau III';
-            }
-
-            
-          },
-          child: const Icon(Icons.send),
         ),
       ),
     );
